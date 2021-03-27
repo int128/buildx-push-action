@@ -1,0 +1,26 @@
+name: buildx-push-action
+description: build and push a Docker image using buildx
+inputs:
+  cache:
+    description: buildx cache directory
+    required: true
+    default: /tmp/buildx
+  repository:
+    description: repository to push
+    required: true
+    default: ghcr.io/${{ github.repository }}
+  working-directory:
+    description: working directory where the action is run
+    required: false
+  extra-args:
+    description: extra arguments to pass to `docker buildx build`
+    required: false
+runs:
+  using: composite
+  steps:
+    - run: ${{ github.action_path }}/exec.sh ${{ inputs.extra-args }}
+      env:
+        CACHE_DIRECTORY: ${{ inputs.cache }}
+        DOCKER_REPOSITORY: ${{ inputs.repository }}
+      working-directory: ${{ inputs.working-directory }}
+      shell: bash
