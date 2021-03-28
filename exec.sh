@@ -5,13 +5,16 @@ set -eux
 : "$GITHUB_REF"
 : "$CACHE_DIRECTORY"
 : "$DOCKER_REPOSITORY"
+: "$IIDFILE"
 
 build_only () {
   docker buildx build . \
     "$@" \
     "--output=type=image,push=false" \
+    "--iidfile=$IIDFILE" \
     "--cache-from=type=local,src=$CACHE_DIRECTORY" \
     "--cache-to=type=local,mode=max,dest=$CACHE_DIRECTORY"
+  cat "$IIDFILE" | sed -e 's|^|::set-output name=iidfile::|'
 }
 
 build_push () {
@@ -19,11 +22,13 @@ build_push () {
     "$@" \
     --push \
     "--tag=$DOCKER_REPOSITORY:$docker_tag" \
+    "--iidfile=$IIDFILE" \
     "--cache-from=type=local,src=$CACHE_DIRECTORY" \
     "--cache-to=type=local,mode=max,dest=$CACHE_DIRECTORY.$$"
   # refresh the cache to prevent growth
   rm -fr "$CACHE_DIRECTORY"
   mv "$CACHE_DIRECTORY.$$" "$CACHE_DIRECTORY"
+  cat "$IIDFILE" | sed -e 's|^|::set-output name=iidfile::|'
 }
 
 # push latest tag when a branch is pushed

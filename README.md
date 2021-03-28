@@ -67,10 +67,13 @@ For multi-platforms build:
 |------|----------|---------|------------
 | `cache`               | `true`  | `/tmp/buildx` | buildx cache directory
 | `repository`          | `true`  | `ghcr.io/${{ github.repository }}` | repository to push (default to GHCR)
+| `iidfile`             | `true`  | `/tmp/iidfile` | file to write the image ID
 | `working-directory`   | `false` | | working directory where the action is run (default to current directory)
 | `extra-args`          | `false` | | extra arguments to pass to `docker buildx build`
 
 
 ## Outputs
 
-None
+| Name | Type | Description
+|------|------|------------
+| `digest` | `string` | Image content-addressable identifier also called a digest such as `sha256:...`
