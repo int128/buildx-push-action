@@ -28,3 +28,4 @@ jobs:
       - uses: ./
         with:
           working-directory: e2e-test
+          repository: ghcr.io/int128/buildx-push-action-e2e-test
