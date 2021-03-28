@@ -9,12 +9,20 @@ inputs:
     description: repository to push
     required: true
     default: ghcr.io/${{ github.repository }}
+  iidfile:
+    description: file to write the image ID
+    required: true
+    default: /tmp/iidfile
   working-directory:
     description: working directory where the action is run
     required: false
   extra-args:
     description: extra arguments to pass to `docker buildx build`
     required: false
+outputs:
+  digest:
+    description: Image content-addressable identifier also called a digest
+    value: ${{ steps.exec.outputs.iidfile }}
 runs:
   using: composite
   steps:
@@ -22,5 +30,7 @@ runs:
       env:
         CACHE_DIRECTORY: ${{ inputs.cache }}
         DOCKER_REPOSITORY: ${{ inputs.repository }}
+        IIDFILE: ${{ inputs.iidfile }}
       working-directory: ${{ inputs.working-directory }}
       shell: bash
+      id: exec
