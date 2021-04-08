@@ -25,7 +25,7 @@ build_push () {
     "--iidfile=$IIDFILE" \
     "--cache-from=type=local,src=$CACHE_DIRECTORY" \
     "--cache-to=type=local,mode=max,dest=$CACHE_DIRECTORY.$$"
-  # refresh the cache to prevent growth
+  # save only new layers to prevent the growth of cache
   rm -fr "$CACHE_DIRECTORY"
   mv "$CACHE_DIRECTORY.$$" "$CACHE_DIRECTORY"
   sed -e 's|^|::set-output name=iidfile::|' < "$IIDFILE"
