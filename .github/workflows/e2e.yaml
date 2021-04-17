@@ -30,7 +30,8 @@ jobs:
         with:
           working-directory: e2e-test
           repository: ghcr.io/int128/buildx-push-action-e2e-test
-      - run: echo digest=${{ steps.build.outputs.digest }}
+      - run: test "${{ steps.build.outputs.digest }}"
+      - run: test "${{ steps.build.outputs.image }}"
 
   test-multi-platforms:
     runs-on: ubuntu-latest
@@ -50,8 +51,10 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - uses: ./
+        id: build
         with:
           extra-args: --platform=linux/amd64,linux/arm64
           working-directory: e2e-test
           repository: ghcr.io/int128/buildx-push-action-e2e-test
-      - run: echo digest=${{ steps.build.outputs.digest }}
+      - run: test "${{ steps.build.outputs.digest }}"
+      - run: test "${{ steps.build.outputs.image }}"
