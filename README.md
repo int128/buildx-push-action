@@ -76,4 +76,5 @@ For multi-platforms build:
 
 | Name | Type | Description
 |------|------|------------
-| `digest` | `string` | Image content-addressable identifier also called a digest such as `sha256:...`
+| `digest` | `string` | digest such as `sha256:01234567890...`
+| `image`  | `string` | image tag (i.e. `repository@sha256:01234567890...`)

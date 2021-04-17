@@ -21,8 +21,11 @@ inputs:
     required: false
 outputs:
   digest:
-    description: Image content-addressable identifier also called a digest
+    description: image digest
     value: ${{ steps.exec.outputs.iidfile }}
+  image:
+    description: image tag with the digest
+    value: ${{ inputs.repository }}@${{ steps.exec.outputs.iidfile }}
 runs:
   using: composite
   steps:
